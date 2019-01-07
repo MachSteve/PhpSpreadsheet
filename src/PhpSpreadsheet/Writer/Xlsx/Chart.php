@@ -13,6 +13,7 @@ use PhpOffice\PhpSpreadsheet\Chart\Title;
 use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Shared\XMLWriter;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
+use DebugBar;
 
 class Chart extends WriterPart
 {
@@ -35,6 +36,7 @@ class Chart extends WriterPart
      */
     public function writeChart(\PhpOffice\PhpSpreadsheet\Chart\Chart $pChart, $calculateCellValues = true)
     {
+        Debugbar::addMessage("write chart");
         $this->calculateCellValues = $calculateCellValues;
 
         // Create XML writer
@@ -423,6 +425,9 @@ class Chart extends WriterPart
         $objWriter->endElement();
 
         if ($xAxisLabel !== null) {
+            $objWriter->startElement('c:majorGridlines');
+            $objWriter->endElement();
+
             $objWriter->startElement('c:title');
             $objWriter->startElement('c:tx');
             $objWriter->startElement('c:rich');
