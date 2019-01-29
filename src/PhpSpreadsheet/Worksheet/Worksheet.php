@@ -24,6 +24,7 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Conditional;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Style\Style;
+use Debugbar;
 
 class Worksheet implements IComparable
 {
@@ -565,9 +566,11 @@ class Worksheet implements IComparable
     {
         $pChart->setWorksheet($this);
         if ($iChartIndex === null) {
+            Debugbar::addMessage("worksheet add chart1");
             $this->chartCollection[] = $pChart;
         } else {
             // Insert the chart at the requested index
+            Debugbar::addMessage("worksheet add chart2");
             array_splice($this->chartCollection, $iChartIndex, 0, [$pChart]);
         }
 

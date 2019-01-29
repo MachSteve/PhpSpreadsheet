@@ -193,7 +193,7 @@ class Chart extends WriterPart
         $objWriter->endElement();
 
         $objWriter->startElement('a:endParaRPr');
-        $objWriter->writeAttribute('lang', 'en-US');
+        $objWriter->writeAttribute('lang', 'en-GB');
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -252,7 +252,7 @@ class Chart extends WriterPart
                         $objWriter->writeAttribute('val', $plotStyle);
                         $objWriter->endElement();
                     }
-
+                    Debugbar::addMessage('write plot group');
                     $this->writePlotGroup($plotGroup, $chartType, $objWriter, $catIsMultiLevelSeries, $valIsMultiLevelSeries, $plotGroupingType);
                 }
             }
@@ -445,6 +445,9 @@ class Chart extends WriterPart
             if (is_array($caption)) {
                 $caption = $caption[0];
             }
+
+            $objWriter->writeRawData('<a:rPr lang="en-GB" sz="1100"/>');
+
             $objWriter->startElement('a:t');
             $objWriter->writeRawData(StringHelper::controlCharacterPHP2OOXML($caption));
             $objWriter->endElement();
