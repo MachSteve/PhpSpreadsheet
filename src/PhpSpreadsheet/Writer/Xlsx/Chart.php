@@ -191,19 +191,19 @@ class Chart extends WriterPart
         $objWriter->endElement();
 
         $objWriter->startElement('c:x');
-        $objWriter->writeAttribute('val','0.28431372549019607');
+        $objWriter->writeAttribute('val','0.27514158720109738');
         $objWriter->endElement();
 
         $objWriter->startElement('c:y');
-        $objWriter->writeAttribute('val','0.76716384974171226');
+        $objWriter->writeAttribute('val','0.76699300936897452');
         $objWriter->endElement();
 
         $objWriter->startElement('c:w');
-        $objWriter->writeAttribute('val','0.57843137254901966');
+        $objWriter->writeAttribute('val','0.56740447645049397');
         $objWriter->endElement();
 
         $objWriter->startElement('c:h');
-        $objWriter->writeAttribute('val','7.9260410919972588E');
+        $objWriter->writeAttribute('val','0.1003181883817921');
         $objWriter->endElement();
 
         $objWriter->endElement();
