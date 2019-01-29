@@ -171,11 +171,73 @@ class Chart extends WriterPart
         $objWriter->writeAttribute('val', $legend->getPosition());
         $objWriter->endElement();
 
-        $this->writeLayout($objWriter, $legend->getLayout());
+        //$this->writeLayout($objWriter, $legend->getLayout());
 
         $objWriter->startElement('c:overlay');
         $objWriter->writeAttribute('val', ($legend->getOverlay()) ? '1' : '0');
         $objWriter->endElement();
+
+
+        //Hard coded legend layout
+        $objWriter->startElement('c:layout');
+        $objWriter->startElement('c:manualLayout');
+        
+        $objWriter->startElement('c:xMode');
+        $objWriter->writeAttribute('val', 'edge');
+        $objWriter->endElement();
+
+        $objWriter->startElement('c:yMode');
+        $objWriter->writeAttribute('val', 'edge');
+        $objWriter->endElement();
+
+        $objWriter->startElement('c:x');
+        $objWriter->writeAttribute('val','0.28431372549019607');
+        $objWriter->endElement();
+
+        $objWriter->startElement('c:y');
+        $objWriter->writeAttribute('val','0.76716384974171226');
+        $objWriter->endElement();
+
+        $objWriter->startElement('c:w');
+        $objWriter->writeAttribute('val','0.57843137254901966');
+        $objWriter->endElement();
+
+        $objWriter->startElement('c:h');
+        $objWriter->writeAttribute('val','7.9260410919972588E');
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+        $objWriter->endElement();
+
+        //End of hard coded legend layout
+
+        //Start of hard coded legend
+        $objWriter->startElement('c:spPr');
+        $objWriter->startElement('a:solidFill');
+
+        $objWriter->startElement('a:sysClr');
+        $objWriter->writeAttribute('val', 'window');
+        $objWriter->writeAttribute('lastClr', 'FFFFFF');
+        //$objWriter->writeRawData('<a:sysClr val="window" lastClr="FFFFFF"/>');
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+        
+        $objWriter->startElement('a:ln');
+        $objWriter->startElement('a:solidFill');
+
+
+        $objWriter->startElement('a:sysClr');
+        $objWriter->writeAttribute('val', 'windowText');
+        $objWriter->writeAttribute('lastClr', 'FFFFFF');
+        $objWriter->endElement();
+        
+
+        $objWriter->endElement();
+        $objWriter->endElement();
+        $objWriter->endElement();
+
+        //End of hard coded legend
 
         $objWriter->startElement('c:txPr');
         $objWriter->startElement('a:bodyPr');
@@ -446,7 +508,15 @@ class Chart extends WriterPart
                 $caption = $caption[0];
             }
 
-            $objWriter->writeRawData('<a:rPr lang="en-GB" sz="1100"/>');
+            //Hard coded font size
+            $objWriter->startElement('a:rPr');
+
+            $objWriter->writeAttribute('lang', 'en-GB');
+            $objWriter->writeAttribute('sz', '1100');
+
+            $objWriter->endElement();
+
+            //end of hard coded size
 
             $objWriter->startElement('a:t');
             $objWriter->writeRawData(StringHelper::controlCharacterPHP2OOXML($caption));
@@ -793,6 +863,16 @@ class Chart extends WriterPart
 
             $objWriter->startElement('a:p');
             $objWriter->startElement('a:r');
+
+            //Hard coded font size
+            $objWriter->startElement('a:rPr');
+
+            $objWriter->writeAttribute('lang', 'en-GB');
+            $objWriter->writeAttribute('sz', '1100');
+
+            $objWriter->endElement();
+
+            //end of hard coded size
 
             $caption = $yAxisLabel->getCaption();
             if (is_array($caption)) {
