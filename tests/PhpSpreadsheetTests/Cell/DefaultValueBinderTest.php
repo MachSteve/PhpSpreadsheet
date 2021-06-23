@@ -8,22 +8,23 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class DefaultValueBinderTest extends TestCase
 {
-    private function createCellStub()
+    private function createCellStub(): Cell
     {
         // Create a stub for the Cell class.
-        /** @var Cell $cellStub */
+        /** @var Cell&MockObject $cellStub */
         $cellStub = $this->getMockBuilder(Cell::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Configure the stub.
-        $cellStub->expects($this->any())
+        $cellStub->expects(self::any())
             ->method('setValueExplicit')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         return $cellStub;
     }
@@ -33,7 +34,7 @@ class DefaultValueBinderTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testBindValue($value)
+    public function testBindValue($value): void
     {
         $cellStub = $this->createCellStub();
         $binder = new DefaultValueBinder();
@@ -41,7 +42,7 @@ class DefaultValueBinderTest extends TestCase
         self::assertTrue($result);
     }
 
-    public function binderProvider()
+    public function binderProvider(): array
     {
         return [
             [null],
@@ -57,6 +58,7 @@ class DefaultValueBinderTest extends TestCase
             ['#REF!'],
             [new DateTime()],
             [new DateTimeImmutable()],
+            ['123456\n'],
         ];
     }
 
@@ -64,19 +66,20 @@ class DefaultValueBinderTest extends TestCase
      * @dataProvider providerDataTypeForValue
      *
      * @param mixed $expectedResult
+     * @param mixed $value
      */
-    public function testDataTypeForValue($expectedResult, ...$args)
+    public function testDataTypeForValue($expectedResult, $value): void
     {
-        $result = DefaultValueBinder::dataTypeForValue(...$args);
+        $result = DefaultValueBinder::dataTypeForValue($value);
         self::assertEquals($expectedResult, $result);
     }
 
-    public function providerDataTypeForValue()
+    public function providerDataTypeForValue(): array
     {
-        return require 'data/Cell/DefaultValueBinder.php';
+        return require 'tests/data/Cell/DefaultValueBinder.php';
     }
 
-    public function testDataTypeForRichTextObject()
+    public function testDataTypeForRichTextObject(): void
     {
         $objRichText = new RichText();
         $objRichText->createText('Hello World');
@@ -86,7 +89,7 @@ class DefaultValueBinderTest extends TestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    public function testCanOverrideStaticMethodWithoutOverridingBindValue()
+    public function testCanOverrideStaticMethodWithoutOverridingBindValue(): void
     {
         $cellStub = $this->createCellStub();
         $binder = new ValueBinderWithOverriddenDataTypeForValue();

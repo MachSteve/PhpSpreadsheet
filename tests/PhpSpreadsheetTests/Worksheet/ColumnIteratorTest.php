@@ -5,30 +5,28 @@ namespace PhpOffice\PhpSpreadsheetTests\Worksheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Column;
 use PhpOffice\PhpSpreadsheet\Worksheet\ColumnIterator;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ColumnIteratorTest extends TestCase
 {
-    public $mockWorksheet;
+    /**
+     * @var Worksheet&MockObject
+     */
+    private $mockWorksheet;
 
-    public $mockColumn;
-
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->mockColumn = $this->getMockBuilder(Column::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->mockWorksheet = $this->getMockBuilder(Worksheet::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->mockWorksheet->expects($this->any())
+        $this->mockWorksheet->expects(self::any())
             ->method('getHighestColumn')
-            ->will($this->returnValue('E'));
+            ->willReturn('E');
     }
 
-    public function testIteratorFullRange()
+    public function testIteratorFullRange(): void
     {
         $iterator = new ColumnIterator($this->mockWorksheet);
         $columnIndexResult = 'A';
@@ -40,7 +38,7 @@ class ColumnIteratorTest extends TestCase
         }
     }
 
-    public function testIteratorStartEndRange()
+    public function testIteratorStartEndRange(): void
     {
         $iterator = new ColumnIterator($this->mockWorksheet, 'B', 'D');
         $columnIndexResult = 'B';
@@ -52,7 +50,7 @@ class ColumnIteratorTest extends TestCase
         }
     }
 
-    public function testIteratorSeekAndPrev()
+    public function testIteratorSeekAndPrev(): void
     {
         $ranges = range('A', 'E');
         $iterator = new ColumnIterator($this->mockWorksheet, 'B', 'D');
@@ -67,7 +65,23 @@ class ColumnIteratorTest extends TestCase
         }
     }
 
-    public function testSeekOutOfRange()
+    public function testIteratorResetStart(): void
+    {
+        $iterator = new ColumnIterator($this->mockWorksheet, 'B', 'D');
+        $iterator->resetStart('E');
+
+        $key = $iterator->key();
+        self::assertSame('E', $key);
+
+        $lastColumn = $iterator->key();
+        while ($iterator->valid() !== false) {
+            $iterator->next();
+            $lastColumn = $iterator->key();
+        }
+        self::assertSame('F', $lastColumn);
+    }
+
+    public function testSeekOutOfRange(): void
     {
         $this->expectException(\PhpOffice\PhpSpreadsheet\Exception::class);
 
@@ -75,10 +89,18 @@ class ColumnIteratorTest extends TestCase
         $iterator->seek('A');
     }
 
-    public function testPrevOutOfRange()
+    public function testPrevOutOfRange(): void
     {
         $iterator = new ColumnIterator($this->mockWorksheet, 'B', 'D');
         $iterator->prev();
         self::assertFalse($iterator->valid());
+    }
+
+    public function testResetStartOutOfRange(): void
+    {
+        $this->expectException(\PhpOffice\PhpSpreadsheet\Exception::class);
+
+        $iterator = new ColumnIterator($this->mockWorksheet, 'B', 'D');
+        $iterator->resetStart('H');
     }
 }
