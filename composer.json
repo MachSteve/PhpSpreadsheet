@@ -1,9 +1,6 @@
 {
-<<<<<<< HEAD
     "name": "stevenbendell/phpspreadsheet",
-=======
-    "name": "MACH/phpspreadsheet",
->>>>>>> parent of 7447bcb4 (Update composer.json)
+
     "description": "MACH version of PHPSpreadsheet - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
     "keywords": ["PHP", "OpenXML", "Excel", "xlsx", "xls", "ods", "gnumeric", "spreadsheet"],
     "homepage": "https://github.com/PHPOffice/PhpSpreadsheet",
